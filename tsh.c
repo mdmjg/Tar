@@ -177,6 +177,11 @@ void eval(char *cmdline)
                 exit(0);
             }
         }
+
+        if (!bg){
+            wait(NULL);
+        }
+
     }
 
     return;
