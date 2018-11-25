@@ -1,7 +1,7 @@
 /* 
  * tsh - A tiny shell program with job control
  * 
- * <Put your name and login ID here>
+ * Maria Jaramillo mdj308 - Li Wendi wl1390
  */
 #include <stdio.h>
 #include <stdlib.h>
