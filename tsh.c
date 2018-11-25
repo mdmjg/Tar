@@ -169,6 +169,7 @@ void eval(char *cmdline)
     int bg = parseline(cmdline, argv);
     if (!builtin_cmd(argv[0])){
         //fork and exec the specific program
+        printf("mar");
     }
 
     return;
