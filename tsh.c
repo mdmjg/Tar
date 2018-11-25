@@ -171,7 +171,7 @@ void eval(char *cmdline)
 
     int bg = parseline(cmdline, argv);
     if (!builtin_cmd(argv)){
-        if ((pid = Fork()) == 0){
+        if ((pid = fork()) == 0){
             if (execve(argv[0],argv,environ) < 0){
                 printf("%s: Command not found. \n", argv[0]);
                 exit(0);
