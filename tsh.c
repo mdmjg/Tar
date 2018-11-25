@@ -167,7 +167,7 @@ void eval(char *cmdline)
 {
     char *argv[MAXARGS];
     int bg = parseline(cmdline, argv);
-    if (!builtin_cmd(argv[0])){
+    if (!builtin_cmd(argv)){
         //fork and exec the specific program
         printf("mar");
     }
