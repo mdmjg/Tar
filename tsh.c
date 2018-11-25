@@ -167,7 +167,7 @@ void eval(char *cmdline)
 {
     char *argv[MAXARGS];
     int bg = parseline(cmdline, argv);
-    if (strcmp(argv[0],"quit"))
+    if (!strcmp(argv[0],"quit"))
         exit(0);
     return;
 }
