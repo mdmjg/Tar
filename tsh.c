@@ -167,7 +167,7 @@ void eval(char *cmdline)
 {
     char *argv[MAXARGS];
     pid_t pid;
-
+    struct job_t *current_job;
 
     int bg = parseline(cmdline, argv);
     if (!builtin_cmd(argv)){
@@ -179,7 +179,12 @@ void eval(char *cmdline)
         }
 
         if (!bg){
+            addjob(jobs, pid, FG, cmdline);
             wait(NULL);
+        }else{
+            addjob(jobs, pid, BG, cmdline);
+            current_job = getjobpid(jobs, pid);
+            printf("[%d] (%d) %s\n", current_job->jid, current_job->pid, cmdline);
         }
 
     }
