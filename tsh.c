@@ -180,7 +180,7 @@ void eval(char *cmdline)
 
         if (!bg){
             addjob(jobs, pid, FG, cmdline);
-            wait(NULL);
+            waitfg(pid);
         }else{
             addjob(jobs, pid, BG, cmdline);
             current_job = getjobpid(jobs, pid);
@@ -286,6 +286,12 @@ void do_bgfg(char **argv)
  */
 void waitfg(pid_t pid)
 {
+    struct job_t *current_job = getjobpid(jobs, pid);
+    while (current_job->state == FG){
+        sleep(1);
+    }
+
+    
     return;
 }
 
@@ -302,6 +308,13 @@ void waitfg(pid_t pid)
  */
 void sigchld_handler(int sig) 
 {
+    pid_t pid;
+    int child_status;
+
+    while((pid = waitpid(-1, &child_status, WNOHANG)) > 0){
+        deletejob(jobs, pid);
+    }
+
     return;
 }
 
