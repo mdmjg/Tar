@@ -167,8 +167,10 @@ void eval(char *cmdline)
 {
     char *argv[MAXARGS];
     int bg = parseline(cmdline, argv);
-    if (!strcmp(argv[0],"quit"))
-        exit(0);
+    if (!builtin_cmd(argv[0])){
+        //fork and exec the specific program
+    }
+
     return;
 }
 
@@ -235,6 +237,21 @@ int parseline(const char *cmdline, char **argv)
  */
 int builtin_cmd(char **argv) 
 {
+    if (!strcmp(argv[0],"quit"))
+        exit(0);
+    else if (!strcmp(argv[0],"fg")){
+        //handle fg
+        return 1;
+    }
+    else if (!strcmp(argv[0],"bg")){
+        //handle bg
+        return 1;
+    }
+    else if (!strcmp(argv[0],"jobs")){
+        //handle jobs
+        return 1;
+    }
+
     return 0;     /* not a builtin command */
 }
 
