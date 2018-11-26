@@ -320,7 +320,7 @@ void sigchld_handler(int sig)
     pid_t pid;
     int child_status;
 
-    while((pid = waitpid(-1, &child_status, WNOHANG|WIMTRACED)) > 0){
+    while((pid = waitpid(-1, &child_status, WNOHANG)) > 0){
         if (WIFSTOPPED(child_status)){
             struct job_t *job = getjobpid(jobs, pid);
             job->state = ST;
@@ -329,7 +329,7 @@ void sigchld_handler(int sig)
         }
         
     }
-    
+
     return;
 }
 
