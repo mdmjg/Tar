@@ -356,7 +356,6 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
-    printf("STOPPPPPPP");
     pid_t pid = fgpid(jobs);
     if (pid){
         kill(-pid, SIGTSTP);
