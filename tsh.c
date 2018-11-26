@@ -269,7 +269,7 @@ int builtin_cmd(char **argv)
         return 1;
     }
     else if (!strcmp(argv[0],"jobs")){
-        listjobs(jobs)
+        listjobs(jobs);
         return 1;
     }
 
