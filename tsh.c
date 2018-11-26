@@ -322,7 +322,7 @@ void sigchld_handler(int sig)
 
     while((pid = waitpid(-1, &child_status, WNOHANG)) > 0){
         if (WIFSTOPPED(child_status)){
-            print("123");
+            printf("123");
             struct job_t *job = getjobpid(jobs, pid);
             job->state = ST;
         }else{
