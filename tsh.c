@@ -169,6 +169,9 @@ void eval(char *cmdline)
     pid_t pid;
     struct job_t *current_job;
 
+    if (argv[0] == NULL)
+        return;
+
     int bg = parseline(cmdline, argv);
     if (!builtin_cmd(argv)){
         if ((pid = fork()) == 0){
@@ -266,7 +269,7 @@ int builtin_cmd(char **argv)
         return 1;
     }
     else if (!strcmp(argv[0],"jobs")){
-        //handle jobs
+        listjobs(jobs)
         return 1;
     }
 
