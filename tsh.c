@@ -324,6 +324,11 @@ void sigchld_handler(int sig)
         deletejob(jobs, pid);
     }
 
+    if (WIFSTOPPED(child_status)) {
+      struct job_t *job = getjobpid(jobs, pid);
+      job->state = ST;
+    }
+
     return;
 }
 
