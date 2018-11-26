@@ -320,12 +320,11 @@ void sigchld_handler(int sig)
     pid_t pid;
     int child_status;
 
-    while((pid = waitpid(-1, &child_status, WNOHANG)) > 0){
+    while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){
         if (WIFSTOPPED(child_status)){
-            printf("123");
             struct job_t *job = getjobpid(jobs, pid);
             job->state = ST;
-        }else{
+        }else if (WIFEXITED(child_status)){
             deletejob(jobs, pid);
         }
         
@@ -357,6 +356,7 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
+    printf("STOPPPPPPP");
     pid_t pid = fgpid(jobs);
     if (pid){
         kill(-pid, SIGTSTP);
