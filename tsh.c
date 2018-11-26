@@ -166,13 +166,18 @@ int main(int argc, char **argv)
 void eval(char *cmdline) 
 {
     char *argv[MAXARGS];
+    char buf[MAXLINE];
+    int bg;
     pid_t pid;
     struct job_t *current_job;
+
+    strcpy(buf, cmdline);
+    bg = parseline(buf, argv);
 
     if (argv[0] == NULL)
         return;
 
-    int bg = parseline(cmdline, argv);
+   
     if (!builtin_cmd(argv)){
         if ((pid = fork()) == 0){
             if (execve(argv[0],argv,environ) < 0){
