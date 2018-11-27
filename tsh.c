@@ -301,7 +301,7 @@ void do_bgfg(char **argv)
         }
     }
     else if (isdigit(argv[1][0])) {
-        current_job = getjobpid(jobs, atoi(argv[1]))
+        current_job = getjobpid(jobs, atoi(argv[1]));
     }
     else{
         printf("%s: argument must be a PID or %%jobid\n", argv[0]);
