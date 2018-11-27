@@ -311,13 +311,13 @@ void do_bgfg(char **argv)
 
     if (!strcmp(argv[0],"bg")){
         current_job->state = BG;
-        printf("[%d] (%d) %s\n", current_job->jid, current_job->pid, argv);
+        printf("[%d] (%d) %s\n", current_job->jid, current_job->pid, current_job->cmdline);
         kill(-current_job->pid, SIGCONT);
 
     }
     else if (!strcmp(argv[0],"fg")){
         current_job->state = FG;
-        printf("[%d] (%d) %s\n", current_job->jid, current_job->pid, argv);
+        printf("[%d] (%d) %s\n", current_job->jid, current_job->pid, current_job->cmdline);
         kill(-current_job->pid, SIGCONT);
     }
     return;
