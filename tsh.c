@@ -288,9 +288,9 @@ int builtin_cmd(char **argv)
 void do_bgfg(char **argv) 
 {
     if (argv[1] == null){
-        printf("%s command requires PID or %jobid argument", argv[0])
+        printf("%s command requires PID or %jobid argument", argv[0]);
     }
-    
+
     return;
 }
 
