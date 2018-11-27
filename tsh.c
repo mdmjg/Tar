@@ -297,7 +297,7 @@ void do_bgfg(char **argv)
 
     if ((argv[1][0] == '%')){
         if  (argv[1][1] == NULL || !isdigit(argv[1][1]) || (!(current_job = getjobjid(jobs, atoi(&argv[1][1]))))){
-            printf("%%[%s]: No such job\n",argv[1][1]);
+            printf("%%[%d]: No such job\n", atoi(argv[1][1]));
             return;
         }
         
