@@ -309,8 +309,15 @@ void do_bgfg(char **argv)
         printf("%s: argument must be a PID or %%jobid\n", argv[0]);
     }
 
+    if (!strcpm(argv[0],"bg")){
+        current_job->state = BG;
+        kill(-current_job->pid, SIGCONT);
 
-
+    }
+    else if (!strcpm(argv[0],"fg")){
+        current_job->state = FG;
+        kill(-current_job->pid, SIGCONT);
+    }
     return;
 }
 
