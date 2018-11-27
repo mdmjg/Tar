@@ -307,6 +307,7 @@ void do_bgfg(char **argv)
     }
     else{
         printf("%s: argument must be a PID or %%jobid\n", argv[0]);
+        return;
     }
 
     if (!strcmp(argv[0],"bg")){
