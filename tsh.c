@@ -301,7 +301,7 @@ void do_bgfg(char **argv)
         || (!(current_job = getjobjid(jobs, atoi(&argv[1][1])))))){
         printf("%%: No such job\n");
     }
-    else if (isdigit(argv[1])) {
+    else if (isdigit(argv[1][0])) {
         //process id
     }
     else{
