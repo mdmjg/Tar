@@ -299,11 +299,13 @@ void do_bgfg(char **argv)
         if  (argv[1][1] == NULL || !isdigit(argv[1][1]) || (!(current_job = getjobjid(jobs, atoi(&argv[1][1]))))){
             printf("%%: No such job\n");
         }
+        return;
     }
     else if (isdigit(argv[1][0])) {
         if (!(current_job = getjobpid(jobs, atoi(&argv[1])))){
             printf("(%d): No such process\n", atoi(argv[1]));
         }
+        return;
     }
     else{
         printf("%s: argument must be a PID or %%jobid\n", argv[0]);
