@@ -318,7 +318,7 @@ void do_bgfg(char **argv)
     else if (!strcmp(argv[0],"fg")){
         current_job->state = FG;
         // printf("[%d] (%d) %s", current_job->jid, current_job->pid, current_job->cmdline);
-        // kill(-current_job->pid, SIGCONT);
+        kill(-current_job->pid, SIGCONT);
     }
     return;
 }
