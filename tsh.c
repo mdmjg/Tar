@@ -304,7 +304,7 @@ void do_bgfg(char **argv)
     }
     else if (isdigit(argv[1][0])) {
         if (!(current_job = getjobpid(jobs, atoi(&argv[1])))){
-            printf("(%d): No such process\n", atoi(argv[1]));
+            printf("(%d): No such process\n", argv[1]);
             return;
         }
        
