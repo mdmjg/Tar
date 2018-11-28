@@ -405,6 +405,7 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {
+    printf("test point 0");
     pid_t pid = fgpid(jobs);
     printf("test point 1");
     if (pid){
