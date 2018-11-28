@@ -195,7 +195,6 @@ void eval(char *cmdline)
         }
 
         if (!bg){
-            printf("test if foreground");
             addjob(jobs, pid, FG, cmdline);
             sigprocmask(SIG_UNBLOCK, &x, NULL);
             waitfg(pid);
@@ -406,11 +405,12 @@ void sigint_handler(int sig)
  *     foreground job by sending it a SIGTSTP.  
  */
 void sigtstp_handler(int sig) 
-{
+{   
+    printf("%s", jobs);
     pid_t pid = fgpid(jobs);
     printf("%d",pid);
     if (pid){
-        printf("test point 2");
+        printf("test point 2\n");
         kill(-pid, SIGTSTP);
         printf("Job [%d] (%d) stopped by signal %d\n", pid2jid(pid), pid, sig);
     }
