@@ -369,9 +369,9 @@ void sigchld_handler(int sig)
 
     while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){
         if (WIFSTOPPED(child_status)){
-            // struct job_t *job = getjobpid(jobs, pid);
-            // job->state = ST;
             sigtstp_handler(20);
+            struct job_t *job = getjobpid(jobs, pid);
+            job->state = ST;
         }else if (WIFEXITED(child_status)){
             deletejob(jobs, pid);
         }else if (WIFSIGNALED(child_status)){
