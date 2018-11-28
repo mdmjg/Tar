@@ -184,8 +184,6 @@ void eval(char *cmdline)
     sigemptyset (&x);
     sigaddset(&x, SIGCHLD);
     
-
-   
     if (!builtin_cmd(argv)){
         if ((pid = fork()) == 0){
             sigprocmask(SIG_BLOCK, &x, NULL);
@@ -197,6 +195,7 @@ void eval(char *cmdline)
         }
 
         if (!bg){
+            printf("test if foreground");
             addjob(jobs, pid, FG, cmdline);
             sigprocmask(SIG_UNBLOCK, &x, NULL);
             waitfg(pid);
