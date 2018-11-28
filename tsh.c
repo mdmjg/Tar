@@ -179,13 +179,13 @@ void eval(char *cmdline)
     if (argv[0] == NULL) // if no argument
         return;
 
-    sigset_t x;
+    sigset_t x;      
     sigemptyset (&x);
     sigaddset(&x, SIGCHLD);
     
     if (!builtin_cmd(argv)){ // not built in command
         if ((pid = fork()) == 0){ //if child
-            sigprocmask(SIG_BLOCK, &x, NULL);
+            sigprocmask(SIG_BLOCK, &x, NULL); //mask the child handler
             setpgid(0,0);   // puts child in new process group to ensure only one fg is running
             if (execve(argv[0],argv,environ) < 0){
                 printf("%s: Command not found\n", argv[0]);
@@ -374,7 +374,7 @@ void sigchld_handler(int sig)
         }else if (WIFEXITED(child_status)){ // if received exit signal
             deletejob(jobs, pid);
         }else if (WIFSIGNALED(child_status)){
-            sigint_handler(2);
+            // sigint_handler(2);
         }
         
     }
