@@ -369,7 +369,7 @@ void sigchld_handler(int sig)
 
     while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){
         if (WIFSTOPPED(child_status)){
-            struct job_t *job = getjobpid(jobs, pid);
+            // struct job_t *job = getjobpid(jobs, pid);
             // job->state = ST;
             sigtstp_handler(20);
         }else if (WIFEXITED(child_status)){
@@ -406,7 +406,6 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {   
-    listjobs(jobs);
     pid_t pid = fgpid(jobs);
     printf("%d",pid);
     if (pid){
