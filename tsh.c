@@ -322,16 +322,16 @@ void do_bgfg(char **argv)
         return;
     }
 
-    if (!strcmp(argv[0],"bg")){ // if changing to bg or restarting 
+    if (!strcmp(argv[0],"fg")){ // if changing to fg or restarting
+        current_job->state = FG;
+        kill(-current_job->pid, SIGCONT); //awaken process
+        waitfg(current_job->pid); // wait for the current foreground job to finish
+    }
+    else if (!strcmp(argv[0],"bg")){ // if changing to bg or restarting 
         current_job->state = BG;
         printf("[%d] (%d) %s", current_job->jid, current_job->pid, current_job->cmdline);
         kill(-current_job->pid, SIGCONT); // awaken process
 
-    }
-    else if (!strcmp(argv[0],"fg")){ // if changing to fg or restarting
-        current_job->state = FG;
-        kill(-current_job->pid, SIGCONT); //awaken process
-        waitfg(current_job->pid); // wait for the current foreground job to finish
     }
     return;
 }
