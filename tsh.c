@@ -372,7 +372,6 @@ void sigchld_handler(int sig)
             job->state = ST;
         }else if (WIFEXITED(child_status)){ // if received exit signal
             deletejob(jobs, pid);
-        }else if (WIFSIGNALED(child_status)){//if receive a ctrl-c signal
         }
         
     }
