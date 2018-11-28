@@ -358,7 +358,7 @@ void sigchld_handler(int sig)
     pid_t pid;
     int child_status;
 
-    while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){ //WNOHANG: no child has exited, WUNTRACED: child has stopped 
+    while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){ //WUNTRACED: child has stopped, WNOHANG: no child has exited 
         if (WIFSTOPPED(child_status)){ //if received stopped signal
             struct job_t *current_job = getjobpid(jobs, pid);
             current_job->state = ST;
