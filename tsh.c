@@ -373,8 +373,11 @@ void sigchld_handler(int sig)
         if (WIFSTOPPED(child_status)){
             struct job_t *job = getjobpid(jobs, pid);
             job->state = ST;
+            sigtstp_handler(20);
         }else if (WIFEXITED(child_status)){
             deletejob(jobs, pid);
+        }else if (WISIGNALED(child_status)){
+            sigint_handler(2);
         }
         
     }
