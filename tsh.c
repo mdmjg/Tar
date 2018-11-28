@@ -376,7 +376,7 @@ void sigchld_handler(int sig)
             sigtstp_handler(20);
         }else if (WIFEXITED(child_status)){
             deletejob(jobs, pid);
-        }else if (WISIGNALED(child_status)){
+        }else if (WIFSIGNALED(child_status)){
             sigint_handler(2);
         }
         
