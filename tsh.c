@@ -1,7 +1,7 @@
 /* 
  * tsh - A tiny shell program with job control
  * 
- * Maria Jaramillo mdj308 - Li Wendi wl1390
+ * mdj308+wl1390
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -171,16 +171,22 @@ void eval(char *cmdline)
     pid_t pid;
     struct job_t *current_job;
 
+
+
     strcpy(buf, cmdline);
     bg = parseline(buf, argv); // divide arguments
 
     if (argv[0] == NULL) // if no argument
         return;
 
-   
+    sigset_t x;
+    sigemptyset (&x);
+    sigaddset(&x, SIGCHLD);
+    
     if (!builtin_cmd(argv)){ // not built in command
         if ((pid = fork()) == 0){ //if child
-            setpgid(0,0); // puts child in new process group to ensure only one fg is running
+            sigprocmask(SIG_BLOCK, &x, NULL);
+            setpgid(0,0);   // puts child in new process group to ensure only one fg is running
             if (execve(argv[0],argv,environ) < 0){
                 printf("%s: Command not found\n", argv[0]);
                 exit(0);
@@ -189,9 +195,11 @@ void eval(char *cmdline)
 
         if (!bg){ // add foreground process
             addjob(jobs, pid, FG, cmdline);
+            sigprocmask(SIG_UNBLOCK, &x, NULL);
             waitfg(pid);
         }else{ // add background process
             addjob(jobs, pid, BG, cmdline);
+            sigprocmask(SIG_UNBLOCK, &x, NULL);
             current_job = getjobpid(jobs, pid);
             printf("[%d] (%d) %s", current_job->jid, current_job->pid, cmdline);
         }
@@ -358,12 +366,15 @@ void sigchld_handler(int sig)
     pid_t pid;
     int child_status;
 
-    while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){ //WUNTRACED: child has stopped, WNOHANG: no child has exited 
+    while((pid = waitpid(-1, &child_status, WNOHANG|WUNTRACED)) > 0){  //WUNTRACED: child has stopped, WNOHANG: no child has exited 
         if (WIFSTOPPED(child_status)){ //if received stopped signal
-            struct job_t *current_job = getjobpid(jobs, pid);
-            current_job->state = ST;
+            sigtstp_handler(20);
+            struct job_t *job = getjobpid(jobs, pid);
+            job->state = ST;
         }else if (WIFEXITED(child_status)){ // if received exit signal
             deletejob(jobs, pid);
+        }else if (WIFSIGNALED(child_status)){
+            sigint_handler(2);
         }
         
     }
@@ -393,7 +404,7 @@ void sigint_handler(int sig)
  *     foreground job by sending it a SIGTSTP.  
  */
 void sigtstp_handler(int sig) 
-{
+{   
     pid_t pid = fgpid(jobs);
     if (pid){ // if job exists
         kill(-pid, SIGTSTP); //send stop signal
