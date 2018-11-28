@@ -195,7 +195,7 @@ void eval(char *cmdline)
 
         if (!bg){ // add foreground process
             addjob(jobs, pid, FG, cmdline);
-            sigprocmask(SIG_UNBLOCK, &x, NULL);
+            sigprocmask(SIG_UNBLOCK, &x, NULL); //finish mask
             waitfg(pid);
         }else{ // add background process
             addjob(jobs, pid, BG, cmdline);
@@ -270,7 +270,7 @@ int parseline(const char *cmdline, char **argv)
  * builtin_cmd - If the user has typed a built-in command then execute
  *    it immediately.  
  */
-int builtin_cmd(char **argv) 
+int builtin_cmd(char **argv)        //this one is simple. not much comment needed
 {
     if (!strcmp(argv[0],"quit")) 
         exit(0);
@@ -331,7 +331,7 @@ void do_bgfg(char **argv)
     else if (!strcmp(argv[0],"fg")){ // if changing to fg or restarting
         current_job->state = FG;
         kill(-current_job->pid, SIGCONT); //awaken process
-        waitfg(current_job->pid); // wait till finished
+        waitfg(current_job->pid); // wait for the current foreground job to finish
     }
     return;
 }
@@ -342,7 +342,7 @@ void do_bgfg(char **argv)
 void waitfg(pid_t pid)
 {
     struct job_t *current_job = getjobpid(jobs, pid);
-    while (current_job->state == FG){ //while running
+    while (current_job->state == FG){ //while the current foreground job is running
         sleep(1);
     }
 
@@ -373,8 +373,8 @@ void sigchld_handler(int sig)
             job->state = ST;
         }else if (WIFEXITED(child_status)){ // if received exit signal
             deletejob(jobs, pid);
-        }else if (WIFSIGNALED(child_status)){
-            // sigint_handler(2);
+        }else if (WIFSIGNALED(child_status)){//if receive a ctrl-c signal
+            sigint_handler(2);
         }
         
     }
