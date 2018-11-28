@@ -188,7 +188,7 @@ void eval(char *cmdline)
    
     if (!builtin_cmd(argv)){
         if ((pid = fork()) == 0){
-            sigprocmask(SIG_BLOCK, &x, NULL)
+            sigprocmask(SIG_BLOCK, &x, NULL);
             setpgid(0,0);
             if (execve(argv[0],argv,environ) < 0){
                 printf("%s: Command not found\n", argv[0]);
@@ -198,11 +198,11 @@ void eval(char *cmdline)
 
         if (!bg){
             addjob(jobs, pid, FG, cmdline);
-            sigprocmask(SIG_UNBLOCK, &x, NULL)
+            sigprocmask(SIG_UNBLOCK, &x, NULL);
             waitfg(pid);
         }else{
             addjob(jobs, pid, BG, cmdline);
-            sigprocmask(SIG_UNBLOCK, &x, NULL)
+            sigprocmask(SIG_UNBLOCK, &x, NULL);
             current_job = getjobpid(jobs, pid);
             printf("[%d] (%d) %s", current_job->jid, current_job->pid, cmdline);
         }
