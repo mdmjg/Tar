@@ -406,7 +406,7 @@ void sigint_handler(int sig)
  */
 void sigtstp_handler(int sig) 
 {   
-    listjobs();
+    listjobs(jobs);
     pid_t pid = fgpid(jobs);
     printf("%d",pid);
     if (pid){
